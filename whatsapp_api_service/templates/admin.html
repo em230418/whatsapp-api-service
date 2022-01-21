@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    {% if users | length == 0 %}
+    <p>No profiles</p>
+    {% else %}
+    <table style="width: 100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Token</th>
+          <th>Webhooks</th>
+        </tr>
+      </thead>
+      {% for u in users %}
+      <tr>
+        <td>{{ u["name"] }}</td>
+        <td>
+          {% if not u["token"] %}
+          <form method="POST">
+            <input type="hidden" name="action" value="generate_access_token" />
+            <input type="hidden" name="profile_name" value="{{ u["name"] }}" />
+            <input type="submit" value="Generate token" />
+          </form>
+          {% else %}
+          {{ u["token"] }}
+          {% endif %}
+        </td>
+        <td>
+          <form method="GET" action="/admin/webhooks">
+            <input type="hidden" name="profile_id" value="{{ u["id"] }}" />
+            <input type="submit" value="Show webhooks" />
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </body>
+</html>

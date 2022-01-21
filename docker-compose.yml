@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  firefox:
+    build: .
+    volumes:
+      - /dev/shm:/dev/shm
+      - firefox-profile-data:/home/seluser/.mozilla/firefox
+      - .:/opt/app
+      - ../whatsapp-api:/mnt/whatsapp-api
+    ports:
+      - "4444:4444"
+      - "127.0.0.1:5900:5900"
+      - "5000:5000"
+    environment:
+      - API_KEY=SECRET_API_KEY
+      - FIREFOX_PROFILE_DIR=/home/seluser/.mozilla/firefox
+
+
+volumes:
+  firefox-profile-data:
